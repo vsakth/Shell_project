@@ -1,0 +1,11 @@
+create table cz_nmis3 as
+select  a.date , 
+datekey,
+aesttime, qty, 
+unit, lower(a.nmi) as nmi, substring(aesttime::time::varchar(20), 1,5) as time_hours
+--, round(cast(n.interval as numeric)/60,2) as interval_factor 
+from 
+sz_nmis3 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+inner join dim_time on substring(time::varchar(20), 1,5) = substring(a.aesttime::time::varchar(20), 1,5)
+inner join Dim_Date e on e.Date = a.date
+where aesttime is not null;
