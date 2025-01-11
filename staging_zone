@@ -1,0 +1,22 @@
+— staging table example:
+This table alone had a different date format 
+create table sz_nmig2 as (
+select  date(TO_TIMESTAMP(aesttime, 'DD/MM/YYYY HH24:MI:SS')::timestamp) as date , 
+TO_TIMESTAMP(aesttime, 'DD/MM/YYYY HH24:MI:SS')::timestamp as aesttime, 
+case when lower(unit) = 'kwh' then cast(quantity as decimal)
+when lower(unit) = 'mwh' then 1000* cast(quantity as decimal)
+when lower(unit) = 'wh' then cast(quantity as decimal)/1000 
+else  0.00 end as qty, 
+unit, substring(filename, 58, 63) as nmi 
+from lz_nmia1 
+where TO_TIMESTAMP(aesttime, 'DD/MM/YYYY HH24:MI:SS')::timestamp is not null 
+and unit is not null;
+
+
+create table sz_nmia1 as (
+select  date(aesttime) as date , 
+aesttime, case when lower(unit) = 'kwh' then cast(quantity as decimal)
+when lower(unit) = 'mwh' then 1000* cast(quantity as decimal)
+when lower(unit) = 'wh' then cast(quantity as decimal)/1000 
+else  0.00 end as qty, 
+unit, substring(filename, 58, 63) as nmi  from nmia1 where aesttime is not null and unit is not null;
