@@ -1,0 +1,38 @@
+Python code for visualisation:
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Data
+nmi = ['nmig2', 'nmig1', 'nmia1', 'nmia2', 'nmia3', 'nmir1', 'nmir2', 'nmis1', 'nmis2', 'nmis3']
+min_hours = [8, 7, 5, 7, 6, 7, 7, 1, 1, 0]  # Min Hours (start)
+max_hours = [20, 18, 20, 18, 19, 19, 18, 23, 23, 23]  # Max Hours (end)
+
+# Set up the plot
+fig, ax = plt.subplots(figsize=(12, 8))
+
+# Create bars for each NMI
+bars = []
+for i in range(len(nmi)):
+    bars.append(ax.barh(nmi[i], max_hours[i] - min_hours[i], left=min_hours[i], height=0.8, label=nmi[i]))
+
+# Set X-axis range from 0 to 24 (hours of the day)
+ax.set_xlim(0, 24)
+ax.set_xticks(np.arange(0, 25, 1))  # Hourly ticks from 0 to 24
+
+# Adding gridlines to improve readability
+ax.grid(True, axis='x', linestyle='--', alpha=0.5)
+
+# Customize labels and title
+ax.set_xlabel('Hour of the Day', fontsize=14)
+ax.set_ylabel('NMI', fontsize=14)
+ax.set_title('Operational Hours for Each NMI', fontsize=16)
+ax.set_xticklabels([f"{i} AM" if i < 12 else f"{i-12} PM" for i in range(0, 25)], rotation=45)
+
+# Add time labels on the bars for clarity
+for i in range(len(nmi)):
+    ax.text(min_hours[i] + 0.2, i, f"{min_hours[i]}:00", va='center', fontsize=10, color='black')
+    ax.text(max_hours[i] - 0.5, i, f"{max_hours[i]}:00", va='center', fontsize=10, color='black')
+
+# Improve layout and display the plot
+plt.tight_layout()
+plt.show()
