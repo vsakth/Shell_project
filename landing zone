@@ -1,0 +1,11 @@
+—Landing Zone tables:
+—Nmi info
+CREATE TABLE lz_nmi_info ( Nmi VARCHAR(200), State VARCHAR(10), Interval VARCHAR(10), PRIMARY KEY (Nmi) 
+DISTSTYLE KEY DISTKEY (Nmi);
+—usage for nmi 
+
+ CREATE TABLE nmia1 (   filename  VARCHAR(200),          
+     AESTTime Varchar(200) ,              
+     Quantity Varchar(200) ,          
+     Unit VARCHAR(10)             
+ );
