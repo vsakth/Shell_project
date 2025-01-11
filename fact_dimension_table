@@ -1,0 +1,160 @@
+
+create table fact_usage select  a.date , 
+datekey,
+aesttime, qty, 
+unit, lower(a.nmi) as nmi, substring(aesttime::time::varchar(20), 1,5) as time_hours
+from 
+nmis3_stage a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+inner join dim_time on substring(time::varchar(20), 1,5) = substring(a.aesttime::time::varchar(20), 1,5)
+inner join Dim_Date e on e.Date = a.date
+where aesttime is not null;
+
+Dim tables:
+CREATE TABLE dim_nmi_info (                 -- National Meter Identifier
+    Nmi Varchar(200) PRIMARY KEY,	State Varchar(10),	Interval  Varchar(10)         -- Unit of measurement (e.g., kWh, MWh, Wh)
+);
+CREATE TABLE Dim_Time (
+    TimeKey INT PRIMARY KEY,        -- Primary Key: TimeKey is an integer
+    Time Time,                       -- Hour as an integer
+    AM_PM VARCHAR(2)                -- AM_PM to store 'AM' or 'PM', max length 2 characters
+);
+
+CREATE TABLE Dim_Date (
+    DateKey INT PRIMARY KEY,       -- DateKey (Primary Key)
+    Date DATE,                     -- Date
+    DayOfWeek VARCHAR(9),          -- Day of the week (e.g., 'Monday', 'Tuesday')
+    IsWeekend BOOLEAN,             -- Boolean flag indicating if it's a weekend (TRUE/FALSE)
+    Month INT,                     -- Month as an integer (1-12)
+    Year INT                       -- Year (e.g., 2023)
+);
+
+
+----inserts ---
+-- Create INSERT statements for Dim_Date table
+WITH DateSeries AS (
+    SELECT generate_series('2017-10-01'::DATE, current_date, '1 day'::INTERVAL) AS Date
+)
+SELECT
+    'INSERT INTO Dim_Date (DateKey, Date, DayOfWeek, IsWeekend, Month, Year) VALUES (' ||
+    EXTRACT(YEAR FROM Date) * 10000 + EXTRACT(MONTH FROM Date) * 100 + EXTRACT(DAY FROM Date) || ', ' ||
+    quote_literal(Date) || ', ' ||
+    quote_literal(TO_CHAR(Date, 'Day')) || ', ' ||
+    CASE WHEN TO_CHAR(Date, 'Day') IN ('Saturday', 'Sunday') THEN 'TRUE' ELSE 'FALSE' END || ', ' ||
+    EXTRACT(MONTH FROM Date) || ', ' ||
+    EXTRACT(YEAR FROM Date) || ');'
+FROM DateSeries;
+
+-- Insert sample data into Dim_Time table with merged 'Time' column
+INSERT INTO Dim_Time (TimeKey, Time, AM_PM)
+VALUES
+(1, '01:00', 'AM'),    -- 1:00 AM
+(2, '01:15', 'AM'),    -- 1:15 AM
+(3, '01:30', 'AM'),    -- 1:30 AM
+(4, '01:45', 'AM'),    -- 1:45 AM
+(5, '02:00', 'AM'),    -- 2:00 AM
+(6, '02:15', 'AM'),    -- 2:15 AM
+(7, '02:30', 'AM'),    -- 2:30 AM
+(8, '02:45', 'AM'),    -- 2:45 AM
+(9, '03:00', 'AM'),    -- 3:00 AM
+(10, '03:15', 'AM'),   -- 3:15 AM
+(11, '03:30', 'AM'),   -- 3:30 AM
+(12, '03:45', 'AM'),   -- 3:45 AM
+(13, '04:00', 'AM'),   -- 4:00 AM
+(14, '04:15', 'AM'),   -- 4:15 AM
+(15, '04:30', 'AM'),   -- 4:30 AM
+(16, '04:45', 'AM'),   -- 4:45 AM
+(17, '05:00', 'AM'),   -- 5:00 AM
+(18, '05:15', 'AM'),   -- 5:15 AM
+(19, '05:30', 'AM'),   -- 5:30 AM
+(20, '05:45', 'AM'),   -- 5:45 AM
+(21, '06:00', 'AM'),   -- 6:00 AM
+(22, '06:15', 'AM'),   -- 6:15 AM
+(23, '06:30', 'AM'),   -- 6:30 AM
+(24, '06:45', 'AM'),   -- 6:45 AM
+(25, '07:00', 'AM'),   -- 7:00 AM
+(26, '07:15', 'AM'),   -- 7:15 AM
+(27, '07:30', 'AM'),   -- 7:30 AM
+(28, '07:45', 'AM'),   -- 7:45 AM
+(29, '08:00', 'AM'),   -- 8:00 AM
+(30, '08:15', 'AM'),   -- 8:15 AM
+(31, '08:30', 'AM'),   -- 8:30 AM
+(32, '08:45', 'AM'),   -- 8:45 AM
+(33, '09:00', 'AM'),   -- 9:00 AM
+(34, '09:15', 'AM'),   -- 9:15 AM
+(35, '09:30', 'AM'),   -- 9:30 AM
+(36, '09:45', 'AM'),   -- 9:45 AM
+(37, '10:00', 'AM'),   -- 10:00 AM
+(38, '10:15', 'AM'),   -- 10:15 AM
+(39, '10:30', 'AM'),   -- 10:30 AM
+(40, '10:45', 'AM'),   -- 10:45 AM
+(41, '11:00', 'AM'),   -- 11:00 AM
+(42, '11:15', 'AM'),   -- 11:15 AM
+(43, '11:30', 'AM'),   -- 11:30 AM
+(44, '11:45', 'AM'),   -- 11:45 AM
+(45, '12:00', 'PM'),   -- 12:00 PM (Noon)
+(46, '12:15', 'PM'),   -- 12:15 PM
+(47, '12:30', 'PM'),   -- 12:30 PM
+(48, '12:45', 'PM'),   -- 12:45 PM
+(49, '01:00', 'PM'),   -- 1:00 PM
+(50, '01:15', 'PM'),   -- 1:15 PM
+(51, '01:30', 'PM'),   -- 1:30 PM
+(52, '01:45', 'PM'),   -- 1:45 PM
+(53, '02:00', 'PM'),   -- 2:00 PM
+(54, '02:15', 'PM'),   -- 2:15 PM
+(55, '02:30', 'PM'),   -- 2:30 PM
+(56, '02:45', 'PM'),   -- 2:45 PM
+(57, '03:00', 'PM'),   -- 3:00 PM
+(58, '03:15', 'PM'),   -- 3:15 PM
+(59, '03:30', 'PM'),   -- 3:30 PM
+(60, '03:45', 'PM'),   -- 3:45 PM
+(61, '04:00', 'PM'),   -- 4:00 PM
+(62, '04:15', 'PM'),   -- 4:15 PM
+(63, '04:30', 'PM'),   -- 4:30 PM
+(64, '04:45', 'PM'),   -- 4:45 PM
+(65, '05:00', 'PM'),   -- 5:00 PM
+(66, '05:15', 'PM'),   -- 5:15 PM
+(67, '05:30', 'PM'),   -- 5:30 PM
+(68, '05:45', 'PM'),   -- 5:45 PM
+(69, '06:00', 'PM'),   -- 6:00 PM
+(70, '06:15', 'PM'),   -- 6:15 PM
+(71, '06:30', 'PM'),   -- 6:30 PM
+(72, '06:45', 'PM'),   -- 6:45 PM
+(73, '07:00', 'PM');   -- 7:00 PM
+
+-- Example of generated INSERT statement
+INSERT INTO Dim_Date (DateKey, Date, DayOfWeek, IsWeekend, Month, Year) 
+VALUES
+(20171001, '2017-10-01', 'Sunday', TRUE, 10, 2017),  -- October 1st, 2017 (Sunday)
+(20171002, '2017-10-02', 'Monday', FALSE, 10, 2017),  -- October 2nd, 2017 (Monday)
+(20171003, '2017-10-03', 'Tuesday', FALSE, 10, 2017), -- October 3rd, 2017 (Tuesday)
+(20171004, '2017-10-04', 'Wednesday', FALSE, 10, 2017), -- October 4th, 2017 (Wednesday)
+(20171005, '2017-10-05', 'Thursday', FALSE, 10, 2017), -- October 5th, 2017 (Thursday)
+(20171006, '2017-10-06', 'Friday', FALSE, 10, 2017),   -- October 6th, 2017 (Friday)
+(20171007, '2017-10-07', 'Saturday', TRUE, 10, 2017),  -- October 7th, 2017 (Saturday)
+(20171008, '2017-10-08', 'Sunday', TRUE, 10, 2017),    -- October 8th, 2017 (Sunday)
+(20171009, '2017-10-09', 'Monday', FALSE, 10, 2017),   -- October 9th, 2017 (Monday)
+(20171010, '2017-10-10', 'Tuesday', FALSE, 10, 2017),  -- October 10th, 2017 (Tuesday)
+(20171011, '2017-10-11', 'Wednesday', FALSE, 10, 2017), -- October 11th, 2017 (Wednesday)
+(20171012, '2017-10-12', 'Thursday', FALSE, 10, 2017), -- October 12th, 2017 (Thursday)
+(20171013, '2017-10-13', 'Friday', FALSE, 10, 2017),   -- October 13th, 2017 (Friday)
+(20171014, '2017-10-14', 'Saturday', TRUE, 10, 2017),  -- October 14th, 2017 (Saturday)
+(20171015, '2017-10-15', 'Sunday', TRUE, 10, 2017),    -- October 15th, 2017 (Sunday)
+(20171016, '2017-10-16', 'Monday', FALSE, 10, 2017),   -- October 16th, 2017 (Monday)
+(20171017, '2017-10-17', 'Tuesday', FALSE, 10, 2017),  -- October 17th, 2017 (Tuesday)
+(20171018, '2017-10-18', 'Wednesday', FALSE, 10, 2017), -- October 18th, 2017 (Wednesday)
+(20171019, '2017-10-19', 'Thursday', FALSE, 10, 2017), -- October 19th, 2017 (Thursday)
+(20171020, '2017-10-20', 'Friday', FALSE, 10, 2017),   -- October 20th, 2017 (Friday)
+(20171021, '2017-10-21', 'Saturday', TRUE, 10, 2017),  -- October 21st, 2017 (Saturday)
+(20171022, '2017-10-22', 'Sunday', TRUE, 10, 2017),    -- October 22nd, 2017 (Sunday)
+(20171023, '2017-10-23', 'Monday', FALSE, 10, 2017),   -- October 23rd, 2017 (Monday)
+(20171024, '2017-10-24', 'Tuesday', FALSE, 10, 2017),  -- October 24th, 2017 (Tuesday)
+(20171025, '2017-10-25', 'Wednesday', FALSE, 10, 2017), -- October 25th, 2017 (Wednesday)
+(20171026, '2017-10-26', 'Thursday', FALSE, 10, 2017), -- October 26th, 2017 (Thursday)
+(20171027, '2017-10-27', 'Friday', FALSE, 10, 2017),   -- October 27th, 2017 (Friday)
+(20171028, '2017-10-28', 'Saturday', TRUE, 10, 2017),  -- October 28th, 2017 (Saturday)
+(20171029, '2017-10-29', 'Sunday', TRUE, 10, 2017),    -- October 29th, 2017 (Sunday)
+(20171030, '2017-10-30', 'Monday', FALSE, 10, 2017),   -- October 30th, 2017 (Monday)
+(20171031, '2017-10-31', 'Tuesday', FALSE, 10, 2017);  -- October 31st, 2017 (Tuesday)
+
+
+
