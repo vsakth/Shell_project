@@ -8,7 +8,7 @@ when lower(unit) = 'mwh' then 1000* cast(quantity as decimal)
 when lower(unit) = 'wh' then cast(quantity as decimal)/1000 
 else  0.00 end as qty, 
 unit, substring(filename, 54,5) as nmi 
-from lz_nmia1 
+from lz_nmig2
 where TO_TIMESTAMP(aesttime, 'DD/MM/YYYY HH24:MI:SS')::timestamp is not null 
 and unit is not null;
 
@@ -19,4 +19,4 @@ aesttime, case when lower(unit) = 'kwh' then cast(quantity as decimal)
 when lower(unit) = 'mwh' then 1000* cast(quantity as decimal)
 when lower(unit) = 'wh' then cast(quantity as decimal)/1000 
 else  0.00 end as qty, 
-unit, substring(filename, 54,5) as nmi  from nmia1 where aesttime is not null and unit is not null;
+unit, substring(filename, 54,5) as nmi  from lz_nmia1 where aesttime is not null and unit is not null;
