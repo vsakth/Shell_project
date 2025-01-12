@@ -4,8 +4,91 @@ CREATE TABLE lz_nmi_info ( Nmi VARCHAR(200), State VARCHAR(10), Interval VARCHAR
 DISTSTYLE KEY DISTKEY (Nmi);
 —usage for nmi 
 
- CREATE TABLE nmia1 (   filename  VARCHAR(200),          
+ CREATE TABLE lz_nmia1 (   filename  VARCHAR(200),          
      AESTTime Varchar(200) ,              
      Quantity Varchar(200) ,          
      Unit VARCHAR(10)             
  );
+CREATE TABLE lz_NMIM1 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
+
+CREATE TABLE lz_NMIS2 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
+
+CREATE TABLE lz_NMIS3 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
+
+CREATE TABLE lz_NMIA2 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
+
+CREATE TABLE lz_NMIA1 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
+
+CREATE TABLE lz_NMIG2 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
+
+CREATE TABLE lz_NMIA3 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
+
+CREATE TABLE lz_NMIR2 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
+
+CREATE TABLE lz_NMIR1 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
+
+CREATE TABLE lz_NMIG1 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
+
+CREATE TABLE lz_NMIS1 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
+
+CREATE TABLE lz_NMIM2 (
+   filename  VARCHAR(200),
+   AESTTime  VARCHAR(200),
+   Quantity  VARCHAR(200),
+   Unit      VARCHAR(10)
+);
