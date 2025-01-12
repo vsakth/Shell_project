@@ -1,5 +1,5 @@
 — staging table example:
-This table alone had a different date format 
+--This table alone had a different date format 
 create table sz_nmig2 as (
 select  distinct date(TO_TIMESTAMP(aesttime, 'DD/MM/YYYY HH24:MI:SS')::timestamp) as date , 
 TO_TIMESTAMP(aesttime, 'DD/MM/YYYY HH24:MI:SS')::timestamp as aesttime, 
