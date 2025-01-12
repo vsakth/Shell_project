@@ -1,9 +1,9 @@
-— Final operating hours:
+-- Final operating hours:
 (with a as 
 (select  date , 
 aesttime, qty, 
 unit, lower(a.nmi) as nmi, round(cast(n.interval as numeric)/60,2) as interval_factor from 
-nmig2_stage a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+sz_nmig2 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
 where aesttime is not null 
 and qty > 1.0)
 ,b as (
@@ -43,7 +43,7 @@ with a as
 (select  date , 
 aesttime, qty, 
 unit, lower(a.nmi) as nmi, round(cast(n.interval as numeric)/60,2) as interval_factor from 
-nmig1_stage a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+sz_nmig1 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
 where aesttime is not null 
 and qty > 1.0)
 ,b as (
@@ -84,7 +84,7 @@ with a as
 (select  date , 
 aesttime, qty, 
 unit, lower(a.nmi) as nmi, round(cast(n.interval as numeric)/60,2) as interval_factor from 
-nmia1_stage a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+sz_nmia1 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
 where aesttime is not null 
 and qty > 1.0)
 ,b as (
@@ -123,7 +123,7 @@ with a as
 (select  date , 
 aesttime, qty, 
 unit, lower(a.nmi) as nmi, round(cast(n.interval as numeric)/60,2) as interval_factor from 
-nmia2_stage a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+sz_nmia2 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
 where aesttime is not null 
 and qty > 1.0)
 ,b as (
@@ -162,7 +162,7 @@ with a as
 (select  date , 
 aesttime, qty, 
 unit, lower(a.nmi) as nmi, round(cast(n.interval as numeric)/60,2) as interval_factor from 
-nmia3_stage a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+sz_nmia3 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
 where aesttime is not null 
 and qty > 1.0)
 ,b as (
@@ -201,7 +201,7 @@ with a as
 (select  date , 
 aesttime, qty, 
 unit, lower(a.nmi) as nmi, round(cast(n.interval as numeric)/60,2) as interval_factor from 
-nmir1_stage a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+sz_nmir1 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
 where aesttime is not null 
 and qty > 1.0)
 ,b as (
@@ -240,7 +240,7 @@ with a as
 (select  date , 
 aesttime, qty, 
 unit, lower(a.nmi) as nmi, round(cast(n.interval as numeric)/60,2) as interval_factor from 
-nmir2_stage a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+sz_nmir2 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
 where aesttime is not null 
 and qty > 1.0)
 ,b as (
@@ -279,7 +279,7 @@ with a as
 (select  date , 
 aesttime, qty, 
 unit, lower(a.nmi) as nmi, round(cast(n.interval as numeric)/60,2) as interval_factor from 
-nmis1_stage a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+sz_nmis1 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
 where aesttime is not null 
 and qty > 1.0)
 ,b as (
@@ -318,7 +318,7 @@ with a as
 (select  date , 
 aesttime, qty, 
 unit, lower(a.nmi) as nmi, round(cast(n.interval as numeric)/60,2) as interval_factor from 
-nmis2_stage a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+sz_nmis2 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
 where aesttime is not null 
 and qty > 1.0)
 ,b as (
@@ -357,7 +357,7 @@ with a as
 (select  date , 
 aesttime, qty, 
 unit, lower(a.nmi) as nmi, round(cast(n.interval as numeric)/60,2) as interval_factor from 
-nmis3_stage a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
+sz_nmis3 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
 where aesttime is not null 
 and qty > 1.0)
 ,b as (
