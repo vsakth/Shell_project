@@ -41,7 +41,7 @@ Order of events:
    qty, 
    unit,
    lower(a.nmi) as nmi,
-   round(cast(n.interval as numeric)/60,2) as interval_factor **Created a interval_factor to convert 15min and 30 min interval to decimals**
+   round(cast(n.interval as numeric)/60,2) as interval_factor ** --Created a interval_factor to convert 15min and 30 min interval to decimals**
    from sz_nmig2 a inner join nmi_info n on lower(a.nmi) = lower(n.nmi) 
    where aesttime is not null 
    and qty > 1.0) **-- filtered out time slots which has unit lesser than 1 kwh**
@@ -56,21 +56,21 @@ Order of events:
    inner join Day_Table_1 d
    on d.as_of_Date = b.date
    and d.as_of_Date = a.date
-   where a.qty > b.avg_qty and a.date > '2017-10-01') **compute avg for getting records which are more than the avg**
+   where a.qty > b.avg_qty and a.date > '2017-10-01') ** --compute avg for getting records which are more than the avg**
    
    ,c as (select *, lag(aesttime) over(partition by date order by date) 
-   as prev_time from operating_hours) **get the previous row's time** 
+   as prev_time from operating_hours) ** --get the previous row's time** 
    
    ,d as (select date,
    aesttime::timestamp start_time, prev_time::timestamp end_time
-   ,round( cast(EXTRACT(EPOCH FROM (aesttime::timestamp - prev_time::timestamp))/3600 as numeric), 2) as diff_time **Get the time diff**
+   ,round( cast(EXTRACT(EPOCH FROM (aesttime::timestamp - prev_time::timestamp))/3600 as numeric), 2) as diff_time ** --Get the time diff**
    , nmi, interval_factor from c) 
    
    ,e as (select nmi,extract(hour from start_time) start_t, count(*) count_of, length(count(*)::Varchar(10)) leng
-   from d where diff_time is not null and diff_time =interval_factor group by 1, 2) **considering only the records with continous difference matching the interval**
+   from d where diff_time is not null and diff_time =interval_factor group by 1, 2) ** --considering only the records with continous difference matching the interval**
 
-   ,f as (select leng, count(*) cnt from e group by 1) **getting the count of records and their corresponding length**
+   ,f as (select leng, count(*) cnt from e group by 1) ** --getting the count of records and their corresponding length**
    select nmi, min(start_t), max(start_t) from e where leng = 
-   (select leng from f where cnt = (select max(cnt) from f)) group by 1;  **arrived at filtering out only the records with highly repeating records**
+   (select leng from f where cnt = (select max(cnt) from f)) group by 1;  ** --arrived at filtering out only the records with highly repeating records**
    7. Dimensional data model
    8. Bar chart for operating hours for each nmi
